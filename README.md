@@ -92,7 +92,3 @@ Factory Resources → Java Classes & Objects → Availability → Priority-Based
 4. Oluyisola, Bhalla, Sgarbossa & Strandhagen (2022). *Designing and developing smart production planning and control systems in the Industry 4.0 era.* DOI: [10.1007/s10845-021-01808-w](https://doi.org/10.1007/s10845-021-01808-w)
 
 Together, these studies support efficient resource allocation, production scheduling, workload management, smart manufacturing and Industry 4.0-based production control for the proposed system.
-
-## Getting Started
-
-Setup and run instructions will be added once the Java implementation begins.
