@@ -1,94 +1,124 @@
 # Smart Factory Resource Allocation System
 
-A smart platform for allocating factory resources such as machines, workers and materials based on production requirements, availability and priority. The project is being developed in Java using Object-Oriented Techniques for efficient resource handling.
+Console-based Java prototype - Group 4, Object Oriented Techniques using Java (CCSE0355), NIET Greater Noida.
+SDG 9 - Industry, Innovation and Infrastructure.
 
-> **Status:** In progress (Month 1 complete, approximately 25%). Implementation and testing remain.
+The system stores factory resources (machines, workers, materials), accepts production tasks with a
+priority, and allocates resources to tasks by availability and priority. Several tasks can request
+resources at the same time (multithreading), and all data is saved to and loaded from text files.
 
-## Course Details
+Requirements: JDK 8 or newer. No external libraries.
 
-| Field | Details |
-|---|---|
-| Program | B.Tech CSE |
-| Course | Object Oriented Techniques using Java |
-| Course Code | CCSE0355 |
-| Faculty | Mr. Suraj Kumar Maddhesiya |
-| Assignment Type | Group Assignment / PBL Project |
-| Team No. | 4 |
-| SDG | SDG 9 – Industry, Innovation and Infrastructure |
+## How to run
 
-## Team Members
+**Windows:** double-click `run.bat` (or run it from Command Prompt inside this folder).
 
-- Aashini Singh
-- Amulya Pratap Singh
-- Aditya Upadhyay
-- Ananya Rastogi
-- Abhirag Verma
+**Linux / macOS:** `./run.sh`
 
-## Background
+**IntelliJ / Eclipse / VS Code:** open this folder as a project, mark `src` as the source folder and run
+`smartfactory.main.FactoryApp`. Keep the working directory as the project folder, so the program finds
+the `data` folder (the program prints the data folder path when it starts).
 
-Smart factories manage multiple machines, workers, materials and production tasks. Resources may be limited, and different tasks may have different priority levels. The system provides resource registration, availability checking, task assignment and allocation management.
-
-## Problem Identification
-
-- Multiple production tasks may require resources simultaneously.
-- High-priority tasks require faster allocation.
-- Machine, worker and material resources need efficient management.
-- Java OOP concepts can improve resource assignment and system organization.
-
-## Objectives
-
-- Model factory resources using Java classes and objects.
-- Apply encapsulation, inheritance and polymorphism.
-- Implement resource availability and allocation logic.
-- Use priority-based allocation for production tasks.
-- Apply object-oriented design for efficient resource management.
-
-## Target Users
-
-Factory Managers, Production Supervisors, Workers, Resource Planners and Administrators.
-
-## Java OOP Concepts Applied
-
-**Unit 1:** Classes, objects, constructors, abstraction, encapsulation and access modifiers.
-
-**Unit 2:** Inheritance, polymorphism, arrays, jagged arrays and Java collections.
-
-## System Approach
-
+**Command line by hand:**
 ```
-Factory Resources → Java Classes & Objects → Availability → Priority-Based Allocation
+javac -d out -sourcepath src src/smartfactory/main/FactoryApp.java
+java -cp out smartfactory.main.FactoryApp
 ```
 
-## Progress
+## Project structure
 
-### Work completed (Month 1)
+```
+src/smartfactory/
+  model/       Allocatable (interface), Resource (abstract), Machine, Worker, Material,
+               Task, Priority, TaskStatus, Allocation
+  service/     ResourceManager, AllocationService, TaskRequestThread, ReportGenerator
+  exception/   InvalidInputException, ResourceUnavailableException
+  util/        FileHandler, InputHelper, Validator
+  main/        FactoryApp (menu)
+data/          resources.txt, tasks.txt (loaded at start), allocation_log.txt (created automatically)
+sample-data/   original copy of the sample data
+```
 
-- [x] Finalized the Smart Factory Resource Allocation System as the project
-- [x] Studied the factory resource allocation problem
-- [x] Studied Java and Object-Oriented Programming concepts
-- [x] Mapped factory resources to Java classes and objects
-- [x] Prepared the initial system design and implementation plan
+## Menu
 
-### Plan for next review
+```
+ 1. Add Resource (Machine / Worker / Material)
+ 2. View Resources
+ 3. Add Production Task
+ 4. View Tasks and Pending Queue
+ 5. Run Priority-Based Allocation
+ 6. Simulate Simultaneous Requests (Multithreading)
+ 7. Complete Task / Release Resources
+ 8. Save Data to File
+ 9. Load Data from File
+10. Allocation Report
+ 0. Exit
+```
 
-- [ ] Design classes for factory resources
-- [ ] Implement inheritance and polymorphism
-- [ ] Develop resource availability and allocation logic
-- [ ] Add priority-based resource assignment
-- [ ] Begin the Java-based resource allocation system
+## How allocation works
 
-## Challenges
+1. Pending tasks wait in a `PriorityQueue`: HIGH first, then MEDIUM, then LOW. Tasks of the same
+   priority are served first-come, first-served (`Task.compareTo`).
+2. For each task the system looks for a free machine of the required type, a free worker with at least
+   the required skill, and a material with enough stock.
+3. Allocation is all-or-nothing: if any one resource is missing, the task gets nothing and keeps waiting
+   (with the reason shown).
+4. Best-fit worker: among suitable workers, the one whose skill is closest to the requirement is chosen,
+   so highly skilled workers stay free for tasks that need them (`Worker.getSuitabilityScore`).
+5. Machines and workers are returned when a task is completed (option 7). Material is consumed.
 
-- Identifying suitable resources for allocation.
-- Designing efficient resource assignment logic.
-- Handling simultaneous production requirements.
-- Applying Java OOP concepts to the system.
+## Demo for the review (about 5 minutes)
 
-## Literature Review
+The sample data has 4 machines (2 of them CNC), 4 workers, 3 materials and 6 tasks.
 
-1. Mahmoodi, Fathi, Tavana, Ghobakhloo & Ng (2024). *Data-driven simulation-based decision support system for resource allocation in Industry 4.0 and smart manufacturing.* DOI: [10.1016/j.jmsy.2023.11.019](https://doi.org/10.1016/j.jmsy.2023.11.019)
-2. Shakeri, Benfriha, Varmazyar, Talhi & Quenehen (2025). *Production scheduling with multi-robot task allocation in a real Industry 4.0 setting.* DOI: [10.1038/s41598-024-84240-3](https://doi.org/10.1038/s41598-024-84240-3)
-3. Renna (2026). *Allocation policies of auxiliary modules to support reconfigurable manufacturing system: an assessment by simulation models.* DOI: [10.1007/s11740-025-01391-6](https://doi.org/10.1007/s11740-025-01391-6)
-4. Oluyisola, Bhalla, Sgarbossa & Strandhagen (2022). *Designing and developing smart production planning and control systems in the Industry 4.0 era.* DOI: [10.1007/s10845-021-01808-w](https://doi.org/10.1007/s10845-021-01808-w)
+1. **Option 2** - show the loaded resources (file handling).
+2. **Option 4** - show the tasks and the pending queue order (HIGH tasks T1, T4 come first).
+3. **Option 6**, type `T1 T5 T6` - three tasks that all need a CNC machine request at the same time in
+   three threads. Only 2 CNC machines exist, so 2 succeed and 1 fails. The same machine is never given
+   twice, because `allocateTask()` is `synchronized`.
+4. **Option 5** - the remaining tasks are allocated in priority order; tasks that cannot get resources
+   show the reason ("must wait: no free worker with skill >= 2").
+5. **Option 7** - complete a task; its machine and worker are released and the waiting tasks can be
+   allocated.
+6. **Option 3** - try wrong input (letters for a number, priority "urgent", duplicate ID) to show
+   exception handling; the program never crashes.
+7. **Option 10** - report with utilisation, tasks grouped by priority (jagged array) and history.
+8. **Option 8** - save, then open `data/allocation_log.txt` to show the log.
 
-Together, these studies support efficient resource allocation, production scheduling, workload management, smart manufacturing and Industry 4.0-based production control for the proposed system.
+To reset the demo data, copy the two files from `sample-data` into `data`.
+
+## Where each Java concept is used
+
+| Concept | Unit | Where |
+|---|---|---|
+| Classes, objects, constructors | 1 | All model classes; objects created in `FactoryApp` and `FileHandler` |
+| Encapsulation, access modifiers | 1 | Private fields with getters in `Resource`, `Task`; `protected` state in `Resource` |
+| Abstraction | 1, 3 | `abstract class Resource` with abstract `getCategory()`, `getDetails()`, `toFileLine()` |
+| Inheritance | 2 | `Machine`, `Worker`, `Material` extend `Resource` |
+| Polymorphism (overriding) | 2 | `canFulfil()`, `allocate()`, `release()`, `getSuitabilityScore()`, `isAvailable()`, `toString()` |
+| Arrays and jagged array | 2 | `ReportGenerator` - `String[][] tasksByPriority`, rows of different length |
+| Collections | 2 | `HashMap` (resource/task lookup), `ArrayList`, `PriorityQueue` (task order), `LinkedHashSet` |
+| Interface | 3 | `Allocatable`, implemented by every resource |
+| Packages | 3 | `model`, `service`, `exception`, `util`, `main` |
+| Exception handling, custom exceptions | 3 | `InvalidInputException`, `ResourceUnavailableException`, try-catch in `FactoryApp`, `InputHelper` |
+| Multithreading | 4 | `TaskRequestThread extends Thread`, `start()`, `join()` in `AllocationService` |
+| Synchronization | 4 | `synchronized allocateTask()`, `synchronized appendLog()` |
+| File handling | 4 | `FileHandler` - `BufferedReader`, `PrintWriter`, try-with-resources, append mode for the log |
+
+## Data file format
+
+`data/resources.txt`
+```
+category,id,name,type,capacity|skill|quantity,available,allocatedTo
+MACHINE,M101,CNC Lathe A,CNC,50,true,-
+```
+
+`data/tasks.txt`
+```
+taskId,name,priority,durationHours,machineType,minSkill,materialType,materialQty,status,assignedMachine,assignedWorker,assignedMaterial
+T1,Gear Shaft Machining,HIGH,4,CNC,3,STEEL,100,PENDING,-,-,-
+```
+
+`-` means "not needed / none". Lines starting with `#` are ignored. When loading, the program checks that
+the two files agree (a busy machine must belong to an allocated task). If a file has an error, the
+line number is shown and the current data is not changed.

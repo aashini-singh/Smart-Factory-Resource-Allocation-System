@@ -1,0 +1,7 @@
+# taskId,name,priority,durationHours,machineType,minSkill,materialType,materialQty,status,assignedMachine,assignedWorker,assignedMaterial
+T1,Gear Shaft Machining,HIGH,4,CNC,3,STEEL,100,PENDING,-,-,-
+T2,Frame Welding,MEDIUM,3,WELDING,4,STEEL,150,PENDING,-,-,-
+T3,Motor Winding,LOW,2,-,2,COPPER,80,PENDING,-,-,-
+T4,Final Assembly,HIGH,5,ASSEMBLY,3,ALUMINIUM,50,PENDING,-,-,-
+T5,Bracket Cutting,MEDIUM,2,CNC,2,STEEL,60,PENDING,-,-,-
+T6,Bolt Threading,LOW,1,CNC,1,STEEL,40,PENDING,-,-,-
