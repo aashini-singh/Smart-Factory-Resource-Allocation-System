@@ -1,0 +1,12 @@
+# category,id,name,type,capacity|skill|quantity,available,allocatedTo
+MACHINE,M101,CNC Lathe A,CNC,50,true,-
+MACHINE,M102,CNC Lathe B,CNC,45,true,-
+MACHINE,M201,Welding Robot,WELDING,30,true,-
+MACHINE,M301,Assembly Unit,ASSEMBLY,60,true,-
+WORKER,W01,Ravi Kumar,OPERATOR,3,true,-
+WORKER,W02,Neha Sharma,TECHNICIAN,5,true,-
+WORKER,W03,Arjun Mehta,OPERATOR,2,true,-
+WORKER,W04,Pooja Yadav,WELDER,4,true,-
+MATERIAL,MT01,Steel Sheet,STEEL,500,true,-
+MATERIAL,MT02,Copper Wire,COPPER,200,true,-
+MATERIAL,MT03,Aluminium Rod,ALUMINIUM,150,true,-

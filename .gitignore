@@ -1,0 +1,6 @@
+out/
+*.class
+data/allocation_log.txt
+.idea/
+*.iml
+.vscode/
